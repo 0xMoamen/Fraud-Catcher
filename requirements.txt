@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pydantic
+openai
+langchain
+langchain-openai
+langgraph
+pandas
+numpy
+requests

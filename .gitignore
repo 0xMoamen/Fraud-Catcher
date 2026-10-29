@@ -1,0 +1,94 @@
+# ==========================================
+# 1. PYTHON & BACKEND (FastAPI, ML, Docker)
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+build/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
+# CRITICAL: Block massive files and environments
+venv/
+.venv/
+env/
+data/
+*.csv
+*.npz
+backend/graph_engine/cache/
+# ==========================================
+# 2. FRONTEND (Next.js, Node.js, React)
+# ==========================================
+node_modules/
+.next/
+out/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.pnpm-debug.log*
+
+# ==========================================
+# 3. ENVIRONMENT VARIABLES & SECRETS (CRITICAL)
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# ==========================================
+# 4. JUPYTER NOTEBOOKS
+# ==========================================
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ==========================================
+# 5. IDE & EDITOR FILES
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ==========================================
+# 6. OS GENERATED FILES
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# 7. LARGE DATA & TEMP FILES (Optional but recommended)
+# ==========================================
+# Uncomment the lines below if you have massive datasets locally 
+# that you DO NOT want to upload to GitHub.
+# datasets/
+# data/
+# *.zip
+# *.tar.gz
+# *.parquet
+# Ignore training checkpoints and baseline models
+backend/receipt_model/baseline_before_finetune/
+backend/receipt_model/checkpoints/
+
+# Ignore large datasets
+data/
+*.csv

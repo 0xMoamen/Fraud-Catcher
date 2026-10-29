@@ -1,0 +1,57 @@
+# ==========================================
+# 1. VIRTUAL ENVIRONMENTS (The #1 cause of huge builds!)
+# ==========================================
+venv/
+.venv/
+env/
+ENV/
+
+# ==========================================
+# 2. PYTHON CACHE & BUILD ARTIFACTS
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.installed.cfg
+
+# ==========================================
+# 3. IDE, GIT & OS FILES
+# ==========================================
+.git/
+.gitignore
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# 4. SECRETS (NEVER put these in a Docker image)
+# ==========================================
+.env
+.env.local
+.env.*.local
+
+# ==========================================
+# 5. LARGE DATA & TEMP FILES
+# ==========================================
+datasets/
+data/
+*.zip
+*.tar.gz
+*.parquet
+*.csv
+temp/
+tmp/
+*.log
+
+# ==========================================
+# 6. JUPYTER NOTEBOOK CACHE
+# ==========================================
+.ipynb_checkpoints/

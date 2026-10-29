@@ -1,0 +1,64 @@
+# ==========================================
+# Python & Virtual Environments
+# ==========================================
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.installed.cfg
+
+# ==========================================
+# Environment Variables & Secrets (NEVER upload these!)
+# ==========================================
+.env
+.env.local
+.env.*.local
+
+# ==========================================
+# IDEs & Editors
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+
+# ==========================================
+# Jupyter Notebooks
+# ==========================================
+.ipynb_checkpoints/
+
+# ==========================================
+# Machine Learning & Large Files
+# ==========================================
+# GitHub has a strict 100MB file limit. 
+# Your Qwen LoRA adapter is ~72MB, which is safe. 
+# If any .pkl or .safetensors file exceeds 100MB, you MUST use Git LFS or provide a download link in your README instead.
+*.h5
+*.pt
+*.pth
+*.onnx
+
+# ==========================================
+# Datasets (Do not upload large datasets to GitHub)
+# ==========================================
+datasets/
+data/
+*.zip
+*.tar.gz
+*.parquet
+
+# ==========================================
+# Logs & Temporary Files
+# ==========================================
+*.log
+logs/
+temp/
