@@ -1,5 +1,0 @@
-Since you want to be able to hand this off to Copilot, here are the exact prompts you can use in the future to expand the dashboard without writing code yourself:
-To add a chart: "Add a bar chart using Recharts to the dashboard that shows the ML score vs LLM score side-by-side."
-To add a history table: "Create a new component called TransactionHistory.tsx. Add a table below the results that stores the last 5 analyzed transactions in local storage and displays them."
-To add the Admin Chatbot: "Add a slide-out chat panel on the right side of the screen. Connect it to a new backend endpoint /chat that sends the current transaction context to the LLM."
-Let me know once you see the dashboard running! What's next on the blueprint? (Feature 1: Real ML Model, or Feature 4: Chatbots?)
