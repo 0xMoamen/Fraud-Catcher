@@ -91,11 +91,14 @@ export default function Home() {
   const [riskData, setRiskData] = useState<any[]>([]);
   const [statusData, setStatusData] = useState<any[]>([]);
 
-  // NEW: Batch file upload states
+  // Batch file upload states
   const [batchFileAccounts, setBatchFileAccounts] = useState<string[]>([]);
   const [batchFileResults, setBatchFileResults] = useState<BatchPredictResult[]>([]);
   const [batchFileErrors, setBatchFileErrors] = useState<any[]>([]);
   const [loadingBatchFile, setLoadingBatchFile] = useState(false);
+
+  // NEW: State for Ranking Batch Results
+  const [batchResults, setBatchResults] = useState<any>(null);
 
   useEffect(() => {
     loadDashboardData();
@@ -200,6 +203,8 @@ export default function Home() {
     }
     setLoadingBatch(true);
     setError(null);
+    setBatchResults(null); // Clear previous results
+    
     try {
       const res = await fetch("http://127.0.0.1:8000/graph-batch-score", {
         method: "POST",
@@ -208,7 +213,9 @@ export default function Home() {
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      console.log("Batch ranking results:", data);
+      
+      // Save the data to state so it renders on the screen
+      setBatchResults(data); 
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -216,7 +223,6 @@ export default function Home() {
     }
   };
 
-  // NEW: Handle batch file upload (one-by-one, no ranking)
   const handleBatchFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -232,7 +238,6 @@ export default function Home() {
     }
   };
 
-  // NEW: Run batch predict (one-by-one)
   const runBatchFilePredict = async () => {
     if (batchFileAccounts.length === 0) return;
     setLoadingBatchFile(true);
@@ -285,7 +290,6 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Single Result Display */}
           {singleResult && (
             <div className="space-y-6">
               <div className={`p-6 rounded-xl border-2 ${
@@ -417,7 +421,7 @@ export default function Home() {
         </div>
 
         {/* ========================================== */}
-        {/* BATCH TESTING (with ranking) */}
+        {/* BATCH TESTING (with Ranking) */}
         {/* ========================================== */}
         <div>
           <div className="flex items-center justify-between mb-4">
@@ -482,10 +486,58 @@ export default function Home() {
               {loadingBatch ? "Processing..." : `Run Batch Test (${selectedAccounts.size} accounts)`}
             </button>
           )}
+
+          {/* NEW: Batch Results Display */}
+          {batchResults && (
+            <div className="mt-8 bg-[#111827] border border-white/5 rounded-xl p-6">
+              <h3 className="text-xl font-bold text-white mb-6">📊 Batch Ranking Results</h3>
+              
+              {/* Summary Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div className="bg-red-500/10 border border-red-500/30 p-4 rounded-lg">
+                  <div className="text-red-400 text-xs uppercase font-bold tracking-wider">High Risk</div>
+                  <div className="text-3xl font-bold text-white mt-1">{batchResults.high_risk_count}</div>
+                </div>
+                <div className="bg-yellow-500/10 border border-yellow-500/30 p-4 rounded-lg">
+                  <div className="text-yellow-400 text-xs uppercase font-bold tracking-wider">Requires Review</div>
+                  <div className="text-3xl font-bold text-white mt-1">{batchResults.review_count}</div>
+                </div>
+                <div className="bg-green-500/10 border border-green-500/30 p-4 rounded-lg">
+                  <div className="text-green-400 text-xs uppercase font-bold tracking-wider">Low Risk</div>
+                  <div className="text-3xl font-bold text-white mt-1">{batchResults.low_risk_count}</div>
+                </div>
+              </div>
+
+              {/* Individual Account List */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Ranked Accounts</h4>
+                {batchResults.results.map((r: any, i: number) => (
+                  <div key={i} className={`flex justify-between items-center p-4 rounded-lg border transition-all hover:scale-[1.01] ${
+                    r.final_verdict === 'HIGH_RISK' ? 'bg-red-500/10 border-red-500/30' :
+                    r.final_verdict === 'REQUIRES_REVIEW' ? 'bg-yellow-500/10 border-yellow-500/30' :
+                    'bg-green-500/10 border-green-500/30'
+                  }`}>
+                    <div>
+                      <div className="font-mono font-bold text-white text-lg">{r.account_id}</div>
+                      <div className="text-xs text-gray-400 mt-1">Percentile Rank: <span className="text-white font-bold">{r.rank_percentile}%</span></div>
+                    </div>
+                    <div className="text-right">
+                      <div className={`font-bold text-lg ${
+                        r.final_verdict === 'HIGH_RISK' ? 'text-red-400' :
+                        r.final_verdict === 'REQUIRES_REVIEW' ? 'text-yellow-400' :
+                        'text-green-400'
+                      }`}>{r.final_verdict.replace('_', ' ')}</div>
+                      <div className="text-xs text-gray-400">Raw Score: {r.raw_score}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* ========================================== */}
-        {/* NEW: BATCH FILE UPLOAD (One-by-One, No Ranking) */}
+        {/* BATCH FILE ANALYSIS (One-by-One) */}
         {/* ========================================== */}
         <div className="bg-[#111827] border border-white/5 rounded-xl p-6">
           <h2 className="text-xl font-bold text-white mb-2">📄 Batch File Analysis (One-by-One)</h2>
